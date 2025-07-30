@@ -1,41 +1,10 @@
 from collections import defaultdict
+from sklearn.metrics import confusion_matrix, classification_report
+import seaborn as sns
+import matplotlib.pyplot as plt
+import random
+import json
 
-def analize_scores(items):
-    label_scores = defaultdict(float)
-
-    # Sumar scores por label
-    for item in items:
-        label_scores[item["label"]] += item["score"]
-
-    # Score total para normalizar
-    total_score = sum(label_scores.values())
-
-    # Normalizar a porcentaje
-    label_percentages = {
-        label: score / total_score * 100
-        for label, score in label_scores.items()
-    }
-
-    print("Porcentajes por label:")
-    for label, percentage in label_percentages.items():
-        print(f"  {label}: {percentage:.2f}%")
-
-    # Aviso 1: normal_log no es mayor que el resto juntos
-    normal_score = label_scores.get("normal_log", 0)
-    others_score = total_score - normal_score
-
-    if normal_score <= others_score:
-        print("⚠️  Alerta: 'normal_log' no domina. El resto tiene más score total.")
-    
-    # Aviso 2: hay otros labels distintos a 'normal_log'
-    if any(label != "normal_log" for label in label_scores):
-        print("⚠️  Alerta: Se han detectado logs no normales (potenciales ataques).")
-
-    # Devolver label más pesado
-    most_likely = max(label_scores.items(), key=lambda x: x[1])
-    print(f"✅ Label más probable: {most_likely[0]} ({most_likely[1]:.2f} score)")
-    
-    return label_percentages
 
 def save_results_to_file(label_percentages, log_query, filename="similar_logs.txt"):
     """
@@ -65,3 +34,36 @@ def save_results_to_file(label_percentages, log_query, filename="similar_logs.tx
             f.write(f"Score: {score:.4f}\n")
             f.write("-" * 80 + "\n")  # Separator for readability"""
     print(f"Results saved to {filename}")
+
+
+def analize_results(y_eval, y_pred,evaluator):
+    labels = list(set(y_eval) | set(y_pred))
+    # Matriz de confusión
+    cm = confusion_matrix(y_eval, y_pred, labels=labels)
+    print("Matriz de Confusión:")
+    print(cm)
+
+    # Reporte detallado (precisión, recall, F1)
+    # print("\nReporte de Clasificación:")
+    # print(classification_report(y_eval, y_pred,labels=labels))
+    report_dict = classification_report(
+        y_eval, y_pred, output_dict=True, labels=labels)
+
+# Guardar como archivo JSON
+    with open("classification_report_"+evaluator+".json", "w") as f:
+        json.dump(report_dict, f, indent=4)
+
+    # Create confussion matrix plot
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
+                xticklabels=labels, yticklabels=labels)
+    plt.xlabel("Predicted", fontsize=14, fontweight='bold')
+    plt.ylabel("Real", fontsize=14, fontweight='bold')
+    plt.title("Confusion Matrix", fontsize=16, fontweight='bold', pad=20)
+
+    plt.xticks(rotation=75, ha='right', fontsize=10)
+    plt.yticks(rotation=0, fontsize=10)
+    plt.tight_layout()
+    # plt.show()
+    number = random.randint(1, 10000)
+    plt.savefig("confusion_matrix_"+evaluator+str(number)+".png", dpi=300)

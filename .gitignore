@@ -1,2 +1,12 @@
 __pycache__
-*.txt
+confusion_matrix*.png
+classification_report*.json
+attack.log
+*.csv
+llm_attack_explanations
+*.JPG
+*.jpeg
+LLM_RAG/LLM_explanations
+LLM_RAG/llm_attack_explanations_k_3
+LLM_RAG/set_up_rag_pipeline.json
+real_constant.py

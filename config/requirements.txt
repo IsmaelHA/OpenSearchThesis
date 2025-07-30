@@ -1,0 +1,24 @@
+# === Core OpenSearch dependencies ===
+opensearch-py>=2.3.1
+opensearch-py-ml>=2.3.0
+
+# === NLP Embedding model ===
+sentence-transformers>=2.2.2
+
+# === Torch for model inference (with GPU support optional) ===
+torch>=2.0.1
+torchaudio>=2.0.2
+torchvision>=0.15.2
+
+# === Core ML/DS tools ===
+pandas<2.0  # For compatibility with opensearch-py-ml
+numpy>=1.22,<2.2  # Compatible with pandas<2
+scikit-learn>=1.2.2
+
+# === Utilities ===
+tqdm>=4.66.1  # For progress bars (optional)
+python-dotenv>=1.0.0  # For optional environment configs
+
+# === For RAG or LLM APIs (optional, comment out if unused) ===
+requests>=2.31.0  # For API calls to Groq/OpenAI
+openai>=1.0.0     # If you're using OpenAI-like APIs

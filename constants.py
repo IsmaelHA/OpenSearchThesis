@@ -1,5 +1,13 @@
-INDEX_NAME = "russellmitchell-logs"
-GATHER_DIRECTORY = "C:\\Users\\elcrio\\Desktop\\TFG\\gather"
-INET_DIRECTORY = "C:\\Users\\elcrio\\Desktop\\TFG\\gather\\inet-firewall"
+INDEX_NAME = "russellmitchell-logs-cosine"
+GATHER_DIRECTORY = ""
+INET_DIRECTORY = ""
+MODEL_ID = ""
 VECTOR_SIZE = 384
-LOGS_PER_FILE = 10000
+LOGS_PER_FILE = 100
+ATTACKS_LOG_FILE = "attack.log"
+GROQ_KEY = ""
+CSV_PATH = ""
+TRAIN_CSV= ""
+EVAL_CSV= ""
+MODEL_NAME = "meta-llama/Llama-3.1-8B-Instruct" 
+LLM_URL = ""

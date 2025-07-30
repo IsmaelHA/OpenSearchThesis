@@ -1,0 +1,38 @@
+Configuration of the Sentece Trasformer and the pipiline, this sould be done with the api dev tool in opensearch dashboard
+
+You must copy the IDs from the response
+
+POST /_plugins/_ml/model_groups/_register
+{
+  "name": "local_model_group",
+  "description": "A model group for local models"
+}
+
+POST /_plugins/_ml/models/_register
+{
+  "name": "huggingface/sentence-transformers/all-MiniLM-L6-v2",
+  "version": "1.0.1",
+  "model_group_id": "4E2cTZYB8OkuKVbXjBFl",
+  "model_format": "TORCH_SCRIPT"
+}
+
+GET /_plugins/_ml/tasks/7k2eTZYB8OkuKVbXyxHU
+
+POST /_plugins/_ml/models/8k2eTZYB8OkuKVbXzRG1/_deploy
+
+GET /_plugins/_ml/tasks/9k2fTZYB8OkuKVbXTxH5
+
+PUT /_ingest/pipeline/log-filter-pipeline
+{
+  "description": "Pipeline to embed logs using MiniLM",
+  "processors": [
+    {
+      "text_embedding": {
+        "model_id": "8k2eTZYB8OkuKVbXzRG1",
+        "field_map": {
+          "log": "embedding"
+        }
+      }
+    }
+  ]
+}

@@ -1,31 +1,47 @@
-
-from datetime import datetime
-from opensearchpy import OpenSearch, helpers
-from sentence_transformers import SentenceTransformer
+from sys import argv
 import time
 from constants import *
-from ingest_pipeline import *
-from search_methods import *
+from Knn.open_search_ingestion_pipeline import *
+from statics_methods import *
+from Knn.search import KnnEvaluator
+from LLM.search_async import LlmEvaluator
+from LLM_RAG.search_async import LlmRagEvaluator
 # Initialize OpenSearch client
-client = OpenSearch(hosts=[{'host': 'localhost', 'port': 9200}], http_auth=('admin', 'Developer@123'), use_ssl=True,
-                    verify_certs=False)
-# You can change this to a cybersecurity-specific model if available
-model = SentenceTransformer('all-MiniLM-L6-v2')
-
-start_time = time.time()  # Inicia el conteo
-
+open_search_client = ClientFactory.get_open_search_client()
 # Create the index with mapping if it doesn't exist
-#create_index(client)
+create_index(open_search_client)
+start_time = time.time() 
+mode = argv[1].lower()# "ingestion", "Knn", "LLM", "LLM_RAG"
+if mode == 'ingestion':
+    train_df = DataPreprocess.load_data(TRAIN_CSV)
+    print("Training samples:", len(train_df))
+    print(train_df.head(5))
+    print(train_df["source"].value_counts())
+    start_time = time.time()
+    # Ingest logs 
+    ingest_batches_from_csv_pipeline(train_df, open_search_client)
+    medium_time = time.time()
+    ingest_time = medium_time - start_time
+    print(f"⏱️ ingestion time: {ingest_time:.4f} seconds")
+else:
+    if mode == "knn":
+        evaluator = KnnEvaluator(open_search_client)
+    elif mode == "llm":
+        evaluator = LlmEvaluator()
+    elif mode == "llm_rag":
+        evaluator = LlmRagEvaluator(open_search_client)
+    else:
+        raise ValueError(
+            "Unknown mode, Modes: knn, llm, llm_rag\n Usage: python main.py [ingestion|knn|llm|llm_rag]")
+    eval_df = DataPreprocess.load_data(EVAL_CSV)
+    print(eval_df["label"].value_counts())
+    evaluator.evaluate(eval_df,k=3)
+    #for k in [3,5,7]:
+    #    evaluator.evaluate(eval_df,k)
+    end_time = time.time()  
+    elapsed = end_time - start_time
+    print(f"⏱️ eval time: {elapsed:.4f} seconds")
 
-# Ingest logs from the gather directory
-#ingest_logs(GATHER_DIRECTORY,client,model)
-
-# Knn search of the logs
-log_examples = ["Jan 23 07:07:01 inet-dns CRON[0]: pam_unix(cron:session): session opened for user jose by (uid=0)",
-                "Jan 24 03:56:47 inet-dns sshd[15085]: Did not receive identification string from 192.168.230.122 port 44004",
-                "Jan 21 00:00:09 dnsmasq[3468]: reply 3x6-.596-.IunWTzebVlyAhhHj*ZfWjOBun1zAf*Wgpq-.YarqcF7oovex5JXZQp35nThgDU1Q3p3lT/-.DM6Vx/vcq3AkrO4Xh2kjojk8RCiDE2wjSv-.gY6ONv8eNmDck8gGwJ8fU3PPctbthfeDZT-.customers_2017.xlsx.email-19.kennedy-mendoza.info is 195.128.194.168"]
-search_similar_logs(log_examples,client,model,k=5)
-
-end_time = time.time()  # ⏱️ Termina el conteo
+end_time = time.time()  
 elapsed = end_time - start_time
-print(f"⏱️ Tiempo de ejecución: {elapsed:.4f} segundos")
+print(f"⏱️ Total execution time: {elapsed:.4f} seconds")
