@@ -11,6 +11,7 @@ The system combines **OpenSearch Vector Database**, **Transformers**, and **Larg
 ---
 
 ## 📂 Project Structure
+```text
 ├── create_csv/ - Scripts for CSV creation and preprocessing from raw logs
 ├── opensearch/ - YAML config for opensearch docker
 ├── Knn/  - KNN IDS implementation and evaluation
@@ -20,7 +21,7 @@ The system combines **OpenSearch Vector Database**, **Transformers**, and **Larg
 ├── plots/  - Scripts to make different plots
 ├── constant.py - Script with all the constants needed, you need to change some of the variables
 └── main.py - Main script and the only one you need to execute
-
+```
 ---
 
 ## Usage
