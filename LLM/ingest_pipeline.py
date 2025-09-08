@@ -2,9 +2,7 @@ import requests
 import json
 from pydantic import BaseModel
 from typing import Literal
-# Data model for LLM to generate
-MODEL_NAME = "meta-llama/Llama-3.1-8B-Instruct"
-LLM_URL = "http://155.54.95.92:8000/v1/chat/completions"
+from real_constant import LLM_URL, MODEL_NAME
 
 
 class Response(BaseModel):
