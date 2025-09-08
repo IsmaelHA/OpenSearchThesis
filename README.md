@@ -1,7 +1,6 @@
 # OpenSearchThesis
 
-# Evaluation of Large Language Models for Intrusion Detection Systems
-**Bachelor Thesis – Ismael Hernández Alarcón**
+**Bachelor Thesis: Evaluation of Large Language Models for Intrusion Detection Systems – Ismael Hernández Alarcón**
 
 This repository contains the implementation of my TFG (Trabajo de Fin de Grado), focused on **log-based intrusion detection** using three approaches:
 1. **KNN-based Detection** (baseline with semantic embeddings)  
@@ -12,24 +11,15 @@ The system combines **OpenSearch Vector Database**, **Transformers**, and **Larg
 ---
 
 ## 📂 Project Structure
-├── create_csv/ # Scripts for CSV creation and preprocessing from raw logs
-├── opensearch/ # YAML config for opensearch docker
-├── Knn/ # KNN IDS implementation and evaluation
-├── LLM/ # LLM IDS implementation and evaluation
-├── LLM_RAG/ # LLM + RAG IDS with contextual retrieval implementation and evaluation
-├── config/ #  configs for embedding pipeline in opensearch and requirements for python
-└── plots/ # Scripts to make different plots
----
-
-## 🗂 Dataset
-Experiments use the **AIT Log Data Set V2.0** (Russell Mitchell subset, ~14GB, 11M logs).  
-
-Preprocessing in create_csv produces a **CSV** with:
-- `source`: service/host (mail, vpn, apache, …)  
-- `log_message`: raw log entry  
-- `label`: attack type or `normal_log`  
-
-⚠️ Due to imbalance, in create_csv you can **downsample** the normal logs. Stratified 80/20 split is used for training/evaluation.
+├── create_csv/ - Scripts for CSV creation and preprocessing from raw logs
+├── opensearch/ - YAML config for opensearch docker
+├── Knn/  - KNN IDS implementation and evaluation
+├── LLM/  - LLM IDS implementation and evaluation
+├── LLM_RAG/  - LLM + RAG IDS with contextual retrieval implementation and evaluation
+├── config/   - configs for embedding pipeline in opensearch and requirements for python
+├── plots/  - Scripts to make different plots
+├── constant.py - Script with all the constants needed, you need to change some of the variables
+└── main.py - Main script and the only one you need to execute
 
 ---
 
@@ -119,4 +109,16 @@ Recall → ratio of true positives over actual positives
 
 F1-score → harmonic mean of precision and recall
 
+
+## 🗂 Dataset
+Experiments use the **AIT Log Data Set V2.0** (Russell Mitchell subset, ~14GB, 11M logs).  
+
+Preprocessing in create_csv produces a **CSV** with:
+- `source`: service/host (mail, vpn, apache, …)  
+- `log_message`: raw log entry  
+- `label`: attack type or `normal_log`  
+
+⚠️ Due to imbalance, in create_csv you can **downsample** the normal logs. Stratified 80/20 split is used for training/evaluation.
+
+---
 
