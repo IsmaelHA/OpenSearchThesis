@@ -7,7 +7,8 @@ This repository contains the implementation of my TFG (Trabajo de Fin de Grado),
 2. **LLM-based Detection** (direct classification with explanations)  
 3. **LLM + Retrieval-Augmented Generation (RAG)** (context-aware detection with explanations)
 
-The system combines **OpenSearch Vector Database**, **Transformers**, and **Large Language Models** to classify system logs as benign or malicious, providing both predictions and human-readable explanations.
+The system combines **OpenSearch Vector Database, Transformers and Large Language Models** to classify system logs as benign or malicious, providing both predictions and human-readable explanations.
+
 ---
 
 ## 📂 Project Structure
