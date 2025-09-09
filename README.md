@@ -9,6 +9,8 @@ This repository contains the implementation of my TFG (Trabajo de Fin de Grado),
 
 The system combines **OpenSearch Vector Database, Transformers and Large Language Models** to classify system logs as benign or malicious, providing both predictions and human-readable explanations.
 
+In TFG_Ismael_Hernandez_Alarcon.pdf is the Thesis with a extended summary in Spanish.
+
 ---
 
 ## 📂 Project Structure
