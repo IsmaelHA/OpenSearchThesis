@@ -120,7 +120,7 @@ Preprocessing in create_csv produces a **CSV** with:
 - `log_message`: raw log entry  
 - `label`: attack type or `normal_log`  
 
-⚠️ Due to imbalance, in create_csv you can **downsample** the normal logs. Stratified 80/20 split is used for training/evaluation.
+⚠️ Due to imbalance, in create_csv/, there are some scripts to **downsample** normal logs as I did. Stratified 80/20 split is used for training/evaluation.
 
 ---
 
