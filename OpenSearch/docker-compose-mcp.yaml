@@ -1,0 +1,81 @@
+version: '3.8'
+services:
+  # ------------------------------------
+  # 1. OpenSearch Cluster (The Data Store)
+  # ------------------------------------
+  opensearch-data-node:
+    image: opensearchproject/opensearch:3 # OpenSearch 3.x image
+    container_name: opensearch-data-node
+    environment:
+      - cluster.name=opensearch-mcp-cluster
+      - node.name=opensearch-node1
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m
+      # CRITICAL for OpenSearch 2.12+ / 3.x: Must set a strong initial password
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=MyStrongAdminPassword123! 
+    ulimits:
+      memlock:
+        soft: -1 
+        hard: -1
+    volumes:
+      - opensearch-data:/usr/share/opensearch/data
+    ports:
+      - 9200:9200 # REST API
+      - 9600:9600 # Transport Layer
+    networks:
+      - opensearch-net
+  opensearch-node1:
+    image: opensearchproject/opensearch:2.13.0
+    container_name: opensearch-data-node
+    environment:
+      - OPENSEARCH_URL=http://opensearch-node1:9200
+      - cluster.name=opensearch-mcp-cluster
+      - node.name=opensearch-node1
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m 
+      - DISABLE_SECURITY_PLUGIN=true # Set to 'false' in production
+    ulimits:
+      memlock:
+        soft: -1 
+        hard: -1
+    volumes:
+      - opensearch-data:/usr/share/opensearch/data
+    ports:
+      - 9200:9200 # REST API (used by MCP Server)
+      - 9600:9600 # Transport Layer
+    networks:
+      - opensearch-net
+
+  # ------------------------------------
+  # 2. Standalone MCP Server (The AI Bridge)
+  # ------------------------------------
+  mcp-server:
+    image: python:3.11-slim
+    container_name: opensearch-mcp-server
+    command: >
+      bash -c "pip install opensearch-mcp-server-py && 
+               python -m mcp_server_opensearch"
+    environment:
+      # These variables tell the MCP server how to connect to OpenSearch
+      - OPENSEARCH_HOST=http://opensearch-node1:9200 
+      - OPENSEARCH_URL=http://opensearch-node1:9200
+      # Since security is disabled in opensearch-node1, we omit user/pass. 
+      # If security is enabled, add:
+      # - OPENSEARCH_USERNAME=admin
+      # - OPENSEARCH_PASSWORD=admin 
+    ports:
+      - "8000:8000" # Expose a port for the MCP Streamable HTTP server (or stdio if configured)
+    depends_on:
+      - opensearch-node1
+    networks:
+      - opensearch-net
+    restart: on-failure
+
+volumes:
+  opensearch-data:
+
+networks:
+  opensearch-net:
+    driver: bridge

@@ -1,0 +1,52 @@
+PUT /_cluster/settings/
+{
+    "persistent": {
+        "plugins.ml_commons.mcp_server_enabled": "true"
+    }
+}
+
+POST /_plugins/_ml/mcp/tools/_register
+{
+  "tools": [
+    {
+      "name": "ListIndexTool",
+      "type": "ListIndexTool",
+      "description": "Retrieve list of indices in the cluster",
+      "attributes": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "indices": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "OpenSearch index name list. Use [] to list all indices."
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "name": "SearchIndexTool",
+      "type": "SearchIndexTool",
+      "description": "Search documents in an OpenSearch index",
+      "attributes": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "index": {
+              "type": "string",
+              "description": "Index to search"
+            },
+            "query": {
+              "type": "object",
+              "description": "The OpenSearch query DSL object"
+            }
+          },
+          "required": ["index", "query"],
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}

@@ -27,10 +27,10 @@ GROQ_KEY = ""
 CSV_PATH = ""
 
 # Path to training CSV subset
-TRAIN_CSV = ""
+TRAIN_CSV = "config/test.csv"
 
 # Path to evaluation CSV subset
-EVAL_CSV = ""
+EVAL_CSV = "config/test.csv"
 
 # LLM model name for classification
 MODEL_NAME = "meta-llama/Llama-3.1-8B-Instruct"

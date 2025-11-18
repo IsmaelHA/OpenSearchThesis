@@ -1,14 +1,15 @@
 from opensearchpy import OpenSearch
-from groq import Groq
+#from groq import Groq
 from constants import GROQ_KEY
 import pandas as pd
 from sklearn.model_selection import train_test_split
-
+from real_constant import *
 
 class ClientFactory:
     @staticmethod
     def get_open_search_client():
-        return OpenSearch(hosts=[{'host': 'localhost', 'port': 9200}], http_auth=('admin', 'Developer@123'), use_ssl=True, verify_certs=False, timeout=60)
+        return OpenSearch(hosts=[{'host': 'localhost', 'port': 9200}], http_auth=(USERNAME,PASSWORD ), use_ssl=True, verify_certs=False,ssl_assert_hostname=False, 
+    ssl_show_warn=False, timeout=60)
 
     @staticmethod
     def get_groq_client():

@@ -34,7 +34,8 @@ def create_index(client):
             }
         }
     }
-    if not client.indices.exists(INDEX_NAME):
+
+    if not client.indices.exists(index=INDEX_NAME):
         client.indices.create(index=INDEX_NAME, body=mapping)
         print(f"Index '{INDEX_NAME}' created.")
     else:
