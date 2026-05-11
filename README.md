@@ -38,6 +38,11 @@ This launches:
 
 OpenSearch node (v2.19) and Dashboard for monitoring
 
+Then:
+```bash
+python .\config\set_up_embedding_pipeline.py
+```
+Set up the pipeline and the transformer to ingest the logs and create the vectors.
 ### 2. Install Python requirements
 
 Create a virtual environment (recommended) and install dependencies from requirements.txt:
