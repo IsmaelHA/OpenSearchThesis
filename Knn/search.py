@@ -39,22 +39,6 @@ def process_response(response):
         label: score / total_score * 100
         for label, score in label_scores.items()
     }
-
-    """print("Porcentajes por label:")
-    for label, percentage in label_percentages.items():
-        print(f"  {label}: {percentage:.2f}%")
-
-    # Aviso 1: normal_log no es mayor que el resto juntos
-    normal_score = label_scores.get("normal_log", 0)
-    others_score = total_score - normal_score
-
-    if normal_score <= others_score:
-        print("⚠️  Alerta: 'normal_log' no domina. El resto tiene más score total.")
-    
-    # Aviso 2: hay otros labels distintos a 'normal_log'
-    if any(label != "normal_log" for label in label_scores):
-        print("⚠️  Alerta: Se han detectado logs no normales (potenciales ataques).")
-    """
     # Devolver label más pesado
     most_likely = max(label_scores.items(), key=lambda x: x[1])
     #print(f"✅ Label más probable: {most_likely[0]} ({most_likely[1]:.2f} score)")

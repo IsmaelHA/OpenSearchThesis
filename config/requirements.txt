@@ -7,6 +7,7 @@ langchain
 langgraph
 langchain-mcp-adapters
 mcp
+langchain_core
 
 # === NLP Embedding model ===
 sentence-transformers

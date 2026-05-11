@@ -9,8 +9,10 @@ GATHER_DIRECTORY = ""
 INET_DIRECTORY = ""
 
 # Transformer model ID for embeddings
-MODEL_ID = ""
+MODEL_ID = "oZCAupoBNHDVUm19zxzy"
 
+USERNAME="admin"
+PASSWORD ="Developer@123"
 # Embedding vector size (MiniLM = 384 dims)
 VECTOR_SIZE = 384
 

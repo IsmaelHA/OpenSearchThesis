@@ -130,7 +130,7 @@ def neural_search(log_message, client, model_id, source, k):
     return results
 
 
-def ingest_batches_from_csv_pipeline(data, client, batch_size=64):
+def ingest_batches_from_csv_pipeline(data, client, batch_size=32):
     actions = []
     batch_logs = []
     batch_labels = []

@@ -3,7 +3,7 @@ from opensearchpy import OpenSearch
 from constants import GROQ_KEY
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from real_constant import *
+from constants import USERNAME,PASSWORD
 
 class ClientFactory:
     @staticmethod
